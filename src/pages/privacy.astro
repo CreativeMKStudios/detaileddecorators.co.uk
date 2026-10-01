@@ -1,0 +1,34 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Base from '../layouts/Base.astro';
+import { breadcrumbLd } from '../data/schema';
+import { site } from '../data/site';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Privacy', path: '/privacy' },
+];
+---
+
+<Base
+  title="Privacy Policy | Detailed Decorators"
+  description="How Detailed Decorators handles your details when you call or email for a quote. No advertising cookies on this site."
+  extraLd={[breadcrumbLd(crumbs)]}
+>
+  <section class="section page-hero">
+    <div class="wrap prose">
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Privacy' }]} />
+      <h1>Privacy</h1>
+      <p>This website is a brochure for {site.name}. It does not have an account, a shop, or an advert cookie.</p>
+      <h2>The quote form</h2>
+      <p>The form does not save your message on a server. It opens an email to {site.email} on your device. If your email app does not open, the form tells you to call instead.</p>
+      <h2>What we do with your details</h2>
+      <p>If you email or call, we use your name, number and the note about the job to reply and to quote. We keep that correspondence so we can do the work you asked for. We do not sell your details.</p>
+      <p>If you want an email deleted, call {site.phoneDisplay} or email {site.email} and ask.</p>
+      <h2>Other sites</h2>
+      <p>Links to Google and Facebook leave this website. Those sites have their own privacy rules.</p>
+      <h2>Who we are</h2>
+      <p>{site.name} is a trading name of {site.legalName}, company number {site.companyNumber}. Address: {site.street}, {site.locality}, Bedford, {site.postalCode}.</p>
+    </div>
+  </section>
+</Base>

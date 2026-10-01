@@ -1,0 +1,57 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import QuoteBand from '../components/QuoteBand.astro';
+import Reviews from '../components/Reviews.astro';
+import Base from '../layouts/Base.astro';
+import { photos } from '../data/photos';
+import { breadcrumbLd } from '../data/schema';
+import { site } from '../data/site';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
+];
+---
+
+<Base
+  title="About Detailed Decorators | Bedford Painters"
+  description="Detailed Decorators is based in Biddenham, Bedford. Adam surveys the job. The team paints, refurbishes and leaves the house tidy. Call 01234 900 002."
+  extraLd={[breadcrumbLd(crumbs)]}
+>
+  <section class="section page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs.map((item, i) => ({ name: item.name, href: i === crumbs.length - 1 ? undefined : item.path }))} />
+      <h1>A Bedford firm, based in Biddenham.</h1>
+      <p class="lede">
+        Detailed Decorators paints and refurbishes homes and businesses. The office is at {site.street}, {site.locality}, {site.postalCode}. Adam comes to you for the survey.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="wrap split">
+      <img src={photos.living.src} width={photos.living.w} height={photos.living.h} alt={photos.living.alt} />
+      <div class="prose">
+        <h2>Who you will deal with</h2>
+        <p>Adam visits, measures the job and talks through the finish. The quote comes from that visit, not from a guess over the phone.</p>
+        <p>Customers often mention Tony and George as the people on the tools. The reviews talk about tidy work, straight answers, and jobs that ran to the time they were given.</p>
+        <p>The firm was incorporated on 14 July 2020. The registered company is {site.legalName}, number {site.companyNumber}. The registered name changed from Detailed Decorators Limited on 30 January 2025. The work people book is still Detailed Decorators. VAT number {site.vat}.</p>
+        <h2>How the work is run</h2>
+        <p>Furniture and floors are covered. Paint is in the quote unless you want to supply it. Days are booked back to back so a room is not left half finished. Waste is taken away at the end.</p>
+        <p>We cover Bedfordshire as the regular round, plus Buckinghamshire and selected jobs in London. If a job is too small for the distance, we will say so.</p>
+        <p>Please call before coming to Franklyn Gardens. It is the office address, not a walk-in shop.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="reviews" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Reviews</p>
+        <h2>Google reviews, unedited.</h2>
+      </div>
+      <Reviews />
+    </div>
+  </section>
+  <QuoteBand />
+</Base>

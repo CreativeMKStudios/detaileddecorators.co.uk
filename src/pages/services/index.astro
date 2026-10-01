@@ -1,0 +1,43 @@
+---
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import QuoteBand from '../../components/QuoteBand.astro';
+import Base from '../../layouts/Base.astro';
+import { breadcrumbLd } from '../../data/schema';
+import { services } from '../../data/services';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Services', path: '/services' },
+];
+---
+
+<Base
+  title="Decorating & Refurbishment Services | Detailed Decorators"
+  description="Painting, plastering, kitchens, flooring, joinery, heating and external work. Bedford decorators. Free survey. Call 01234 900 002."
+  extraLd={[breadcrumbLd(crumbs)]}
+>
+  <section class="section page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Services' }]} />
+      <h1>Services for the whole job.</h1>
+      <p class="lede">
+        Painting and decorating is where most people start. If the room also needs plaster, a floor, storage, or work outside, it can go on the same quote.
+      </p>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0;">
+    <div class="wrap card-grid">
+      {
+        services.map((service, index) => (
+          <a class="card" href={`/services/${service.slug}`}>
+            <span class="card-index">{String(index + 1).padStart(2, '0')}</span>
+            <h2 style="font-size: 1.35rem; margin-top: 12px;">{service.title}</h2>
+            <p>{service.summary}</p>
+            <p class="card-more">Read about this service</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+  <QuoteBand />
+</Base>

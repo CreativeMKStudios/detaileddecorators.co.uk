@@ -1,0 +1,57 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import QuoteBand from '../components/QuoteBand.astro';
+import Base from '../layouts/Base.astro';
+import gallery from '../data/gallery.json';
+import { breadcrumbLd } from '../data/schema';
+
+const photos = gallery as { src: string; w: number; h: number }[];
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Projects', path: '/projects' },
+];
+---
+
+<Base
+  title="Decorating Projects in Bedfordshire | Detailed Decorators"
+  description="Photos from decorating and refurbishment jobs by Detailed Decorators. Homes and buildings around Bedford. Call 01234 900 002 for a survey."
+  extraLd={[breadcrumbLd(crumbs)]}
+>
+  <section class="section page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Projects' }]} />
+      <h1>Projects</h1>
+      <p class="lede">
+        {photos.length} photos from jobs we have published. They show painted rooms, stairs, joinery and outside work. Tap a photo to enlarge it.
+      </p>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="gallery">
+        {
+          photos.map((photo, index) => (
+            <button class="shot" type="button" data-full={photo.src} data-alt={`Decorating project photo ${index + 1} by Detailed Decorators`}>
+              <img
+                src={photo.src}
+                width={photo.w}
+                height={photo.h}
+                alt={`Decorating project photo ${index + 1} by Detailed Decorators`}
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+  <dialog id="lightbox">
+    <form method="dialog">
+      <button class="btn btn-light" type="submit">Close</button>
+    </form>
+    <img id="lightbox-img" alt="" />
+    <p id="lightbox-cap"></p>
+  </dialog>
+  <QuoteBand />
+</Base>

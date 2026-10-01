@@ -1,0 +1,131 @@
+---
+import '@fontsource/plus-jakarta-sans/latin-400.css';
+import '@fontsource/plus-jakarta-sans/latin-700.css';
+import '@fontsource/plus-jakarta-sans/latin-800.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { businessNode, graph, websiteNode } from '../data/schema';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  extraLd?: unknown[];
+  noindex?: boolean;
+}
+
+const { title, description, extraLd = [], noindex = false } = Astro.props;
+let pathname = Astro.url.pathname;
+if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
+const canonical = new URL(pathname || '/', Astro.site).href;
+const og = new URL('/images/og.jpg', Astro.site).href;
+const ld = graph([businessNode(), websiteNode(), ...extraLd]);
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    <meta name="theme-color" content="#414732" />
+    <meta name="author" content="Detailed Decorators" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sage green bay window painted by Detailed Decorators" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={og} />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="frame">
+      <div class="sheet">
+        <Header path={pathname || '/'} />
+        <main id="main">
+          <slot />
+        </main>
+        <Footer />
+      </div>
+    </div>
+    <div class="mobile-bar">
+      <a class="call" href={`tel:${site.phoneTel}`}>Call</a>
+      <a class="btn" href="/contact">Get a quote</a>
+    </div>
+    <script>
+      const btn = document.querySelector('.menu-btn');
+      const panel = document.querySelector('.nav-panel');
+      if (btn && panel) {
+        const close = () => {
+          panel.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.textContent = 'Menu';
+        };
+        btn.addEventListener('click', () => {
+          const open = panel.classList.toggle('is-open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          btn.textContent = open ? 'Close' : 'Menu';
+        });
+        panel.querySelectorAll('a').forEach((link) => link.addEventListener('click', close));
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') close();
+        });
+      }
+
+      const dialog = document.querySelector('#lightbox');
+      const dialogImg = document.querySelector('#lightbox-img');
+      const caption = document.querySelector('#lightbox-cap');
+      document.querySelectorAll('[data-full]').forEach((item) => {
+        item.addEventListener('click', () => {
+          if (!(dialog instanceof HTMLDialogElement) || !(dialogImg instanceof HTMLImageElement)) return;
+          dialogImg.src = item.getAttribute('data-full') || '';
+          dialogImg.alt = item.getAttribute('data-alt') || '';
+          if (caption) caption.textContent = item.getAttribute('data-alt') || '';
+          dialog.showModal();
+        });
+      });
+
+      const form = document.querySelector('#quote-form');
+      if (form instanceof HTMLFormElement) {
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const data = new FormData(form);
+          const status = document.querySelector('#form-status');
+          if (String(data.get('company') || '').trim()) return;
+          const name = String(data.get('name') || '').trim();
+          const phone = String(data.get('phone') || '').trim();
+          const email = String(data.get('email') || '').trim();
+          const town = String(data.get('town') || '').trim();
+          const service = String(data.get('service') || '').trim();
+          const message = String(data.get('message') || '').trim();
+          if (!name || !phone || !message) {
+            if (status) status.textContent = 'Please add your name, phone number and a short note about the job.';
+            return;
+          }
+          const body = [`Name: ${name}`, `Phone: ${phone}`, `Email: ${email}`, `Town: ${town}`, `Work: ${service}`, '', message].join('\n');
+          const href = `mailto:info@detaileddecorators.co.uk?subject=${encodeURIComponent(`Quote request from ${name}`)}&body=${encodeURIComponent(body)}`;
+          if (status) {
+            status.textContent = 'Your email app should open with this message. If it does not, call 01234 900 002.';
+          }
+          window.location.href = href;
+        });
+      }
+    </script>
+  </body>
+</html>

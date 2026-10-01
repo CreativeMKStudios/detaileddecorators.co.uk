@@ -1,0 +1,38 @@
+---
+interface Props {
+  path: string;
+}
+
+const { path } = Astro.props;
+const links = [
+  { href: '/services', label: 'Services' },
+  { href: '/#process', label: 'Process' },
+  { href: '/projects', label: 'Work' },
+  { href: '/areas', label: 'Areas' },
+  { href: '/#faqs', label: 'FAQs' },
+];
+
+function current(href: string) {
+  if (href.startsWith('/#')) return false;
+  if (href === '/') return path === '/';
+  return path === href || path.startsWith(`${href}/`);
+}
+---
+
+<header class="site-header">
+  <a class="logo" href="/" aria-label="Detailed Decorators home">
+    Detailed
+    <small>Decorators</small>
+  </a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-panel">Menu</button>
+  <nav id="nav-panel" class="nav-panel" aria-label="Main">
+    {
+      links.map((link) => (
+        <a href={link.href} aria-current={current(link.href) ? 'page' : undefined}>
+          {link.label}
+        </a>
+      ))
+    }
+    <a class="btn" href="/contact">Get a quote</a>
+  </nav>
+</header>

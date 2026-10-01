@@ -1,0 +1,55 @@
+---
+import { areas } from '../data/areas';
+import { services } from '../data/services';
+import { site } from '../data/site';
+---
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <a class="logo" href="/" style="color: white;">Detailed <small style="color:#d7decc;">Decorators</small></a>
+      <p>Painters and decorators based in Biddenham. Homes and businesses across Bedfordshire, Buckinghamshire and London.</p>
+      <p><a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a></p>
+      <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+      <address>
+        {site.street}<br />
+        {site.locality}, Bedford<br />
+        {site.postalCode}
+      </address>
+    </div>
+    <div>
+      <h2>Services</h2>
+      <ul>
+        {services.map((service) => (
+          <li><a href={`/services/${service.slug}`}>{service.title}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <h2>Areas</h2>
+      <ul>
+        {areas.map((area) => (
+          <li><a href={`/areas/${area.slug}`}>{area.name}</a></li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <h2>Company</h2>
+      <ul>
+        <li><a href="/about">About us</a></li>
+        <li><a href="/projects">Projects</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href={site.google} rel="noopener noreferrer" target="_blank">Google reviews</a></li>
+        <li><a href={site.facebook} rel="noopener noreferrer" target="_blank">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-base">
+    <p>
+      {site.name} is a trading name of {site.legalName}. Company number {site.companyNumber}. VAT {site.vat}.
+      Registered office: {site.street}, {site.locality}, Bedford, {site.postalCode}.
+    </p>
+    <p>© {new Date().getFullYear()} {site.name}.</p>
+  </div>
+</footer>

@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title="Page not found | Detailed Decorators"
+  description="This page is not on the Detailed Decorators website."
+  noindex={true}
+>
+  <section class="section page-hero">
+    <div class="wrap">
+      <h1>This page is not here.</h1>
+      <p class="lede">The link may be old. You can go back to the homepage, or call {site.phoneDisplay}.</p>
+      <div class="hero-actions">
+        <a class="btn" href="/">Back to the homepage</a>
+        <a class="btn btn-ghost" href="/contact">Contact</a>
+      </div>
+    </div>
+  </section>
+</Base>

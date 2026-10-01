@@ -1,0 +1,72 @@
+---
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import QuoteBand from '../../components/QuoteBand.astro';
+import Base from '../../layouts/Base.astro';
+import { areas, getArea } from '../../data/areas';
+import { breadcrumbLd } from '../../data/schema';
+import { services } from '../../data/services';
+
+export function getStaticPaths() {
+  return areas.map((area) => ({ params: { slug: area.slug } }));
+}
+
+const { slug } = Astro.params;
+const area = getArea(slug || '');
+if (!area) throw new Error(`Missing area: ${slug}`);
+const nearby = area.nearby.map((item) => getArea(item)).filter((item) => item !== undefined);
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Areas', path: '/areas' },
+  { name: area.name, path: `/areas/${area.slug}` },
+];
+---
+
+<Base
+  title={area.metaTitle}
+  description={area.metaDescription}
+  extraLd={[breadcrumbLd(crumbs)]}
+>
+  <section class="section page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={crumbs.map((item, i) => ({ name: item.name, href: i === crumbs.length - 1 ? undefined : item.path }))} />
+      <h1>Painters and decorators in {area.name}.</h1>
+      <p class="lede">{area.lede}</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0;">
+    <div class="wrap split">
+      <div class="prose">
+        {area.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        <h2>Jobs we often do in {area.name}</h2>
+        <ul class="includes">
+          {area.jobs.map((job) => <li>{job}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h2>Nearby</h2>
+        <div class="area-grid" style="margin-top: 12px;">
+          {nearby.map((item) => (
+            <a class="area-card" href={`/areas/${item.slug}`}>
+              <h3>{item.name}</h3>
+              <p>{item.line}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0;">
+    <div class="wrap">
+      <h2>Services in {area.name}</h2>
+      <div class="card-grid" style="margin-top: 16px;">
+        {services.slice(0, 6).map((service) => (
+          <a class="card" href={`/services/${service.slug}`}>
+            <h3>{service.title}</h3>
+            <p>{service.summary}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <QuoteBand title={`Book a survey in ${area.name}.`} text="Adam will come to the property, talk through the finish, and send a clear quote." />
+</Base>
