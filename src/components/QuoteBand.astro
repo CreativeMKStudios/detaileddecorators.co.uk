@@ -1,0 +1,22 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+
+const {
+  title = 'Ask Adam for a free survey.',
+  text = 'Call or send a note about the job. You will get a time that suits you, then a clear quote.',
+} = Astro.props;
+---
+
+<section class="quote-band" aria-label="Get a quote">
+  <h2>{title}</h2>
+  <p>{text}</p>
+  <div class="hero-actions">
+    <a class="btn btn-light" href="/contact">Get a quote</a>
+    <a class="btn" href={`tel:${site.phoneTel}`}>Call {site.phoneDisplay}</a>
+  </div>
+</section>

@@ -1,0 +1,33 @@
+---
+import { reviewDate, reviews } from '../data/reviews';
+import { site } from '../data/site';
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+const list = typeof limit === 'number' ? reviews.slice(0, limit) : reviews;
+---
+
+<div class="review-grid">
+  {
+    list.map((review) => (
+      <blockquote class="review">
+        <p>
+          <span class="stars" aria-hidden="true">{'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}</span>
+        </p>
+        <p>{review.quote}</p>
+        <footer>
+          <span>Google review</span>
+          <span>{review.rating} out of 5</span>
+          {review.date && <time datetime={review.date}>{reviewDate(review.date)}</time>}
+        </footer>
+      </blockquote>
+    ))
+  }
+</div>
+<p class="lede">
+  Rated {site.rating} from {site.reviewCount} Google reviews.
+  <a href={site.google} rel="noopener noreferrer" target="_blank">Read them on Google</a>.
+</p>

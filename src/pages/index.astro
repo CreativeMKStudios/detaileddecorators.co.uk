@@ -1,0 +1,202 @@
+---
+import FaqList from '../components/FaqList.astro';
+import QuoteBand from '../components/QuoteBand.astro';
+import Reviews from '../components/Reviews.astro';
+import Base from '../layouts/Base.astro';
+import { areas } from '../data/areas';
+import { faqs } from '../data/faqs';
+import { photos } from '../data/photos';
+import { faqLd } from '../data/schema';
+import { brands, promises, site, steps } from '../data/site';
+import { services } from '../data/services';
+
+const preview = [
+  { photo: photos.orangery, caption: 'White garden room on a brick house' },
+  { photo: photos.card, caption: 'Hall, stairs and a herringbone floor' },
+  { photo: photos.living, caption: 'Alcove shelves beside the fireplace' },
+  { photo: photos.bedroom, caption: 'Bedroom with shutters and a fitted bed' },
+];
+---
+
+<Base
+  title="Painters & Decorators in Bedford | Detailed Decorators"
+  description="Bedford painters and decorators based in Biddenham. Free survey with Adam. Homes and businesses across Bedfordshire, Buckinghamshire and London. Call 01234 900 002."
+  extraLd={[faqLd(faqs)]}
+>
+  <section class="hero">
+    <div class="hero-copy">
+      <h1>A fresh coat.<br />A whole new<br />feeling.</h1>
+      <p class="lede">
+        Detailed Decorators are painters and decorators in Bedford. We also refurbish homes and businesses across Bedfordshire, Buckinghamshire and London. Adam visits for a free survey. The team then works through on back-to-back days.
+      </p>
+      <div class="hero-actions">
+        <a class="btn" href="/contact">Get started</a>
+        <a class="btn btn-ghost" href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+      </div>
+      <a class="rating-pill" href={site.google} rel="noopener noreferrer" target="_blank">
+        <span class="stars" aria-hidden="true">★★★★★</span>
+        <span><strong>{site.rating}</strong> from {site.reviewCount} Google reviews</span>
+      </a>
+    </div>
+    <div class="hero-visual">
+      <img
+        class="hero-img"
+        src={photos.hero.src}
+        srcset={photos.hero.srcSet}
+        sizes="(max-width: 899px) 100vw, 50vw"
+        width={photos.hero.w}
+        height={photos.hero.h}
+        alt={photos.hero.alt}
+        fetchpriority="high"
+        decoding="async"
+      />
+      <figure class="float-card">
+        <img src={photos.card.src} width={photos.card.w} height={photos.card.h} alt={photos.card.alt} />
+      </figure>
+    </div>
+  </section>
+  <div class="wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path fill="#e4eadc" d="M0 48c160 36 300-42 500-8s340 46 560 8 240-36 380-16v58H0Z"></path>
+    </svg>
+  </div>
+
+  <section class="band">
+    <div class="wrap">
+      <a class="pill" href="/about">About us</a>
+      <h2>Good painting is more than a colour on the wall.</h2>
+      <p class="lede">
+        The part you live with is the finish. Straight lines. Smooth walls. Floors left clean. We cover the furniture before we start, and we take the mess away when we leave.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>Three steps. Then we get on with it.</h2>
+      </div>
+      <ol class="steps">
+        {
+          steps.map((step, index) => (
+            <li class="step">
+              <span>{index + 1}</span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Services</p>
+        <h2>Paint, and the work around it.</h2>
+        <p>Decoration is the heart of the firm. Kitchens, floors, joinery, heating and the outside of the building sit on the same quote when you need them.</p>
+      </div>
+      <div class="card-grid">
+        {
+          services.map((service, index) => (
+            <a class="card" href={`/services/${service.slug}`}>
+              <span class="card-index">{String(index + 1).padStart(2, '0')}</span>
+              <h3>{service.title}</h3>
+              <p>{service.summary}</p>
+              <p class="card-more">See this service</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">On the day</p>
+        <h2>What you can expect in the house.</h2>
+      </div>
+      <div class="promise-grid">
+        {
+          promises.map((item) => (
+            <article class="promise">
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </article>
+          ))
+        }
+      </div>
+      <p class="eyebrow" style="margin-top: 28px;">Paint and papers we use</p>
+      <ul class="brands">
+        {brands.map((brand) => <li>{brand}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="reviews" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Reviews</p>
+        <h2>What customers wrote on Google.</h2>
+        <p>These are recent Google reviews, in the customer’s own words. Adam runs the surveys. Tony and George are the names that come up on the tools.</p>
+      </div>
+      <Reviews limit={6} />
+      <p style="margin-top: 16px;"><a href="/about#reviews">Read more reviews</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="work" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Work</p>
+        <h2>Finished rooms and the outside of the house.</h2>
+      </div>
+      <div class="bento">
+        {
+          preview.map((item, index) => (
+            <figure class={index === 0 ? 'bento-main' : undefined}>
+              <img src={item.photo.src} width={item.photo.w} height={item.photo.h} alt={item.photo.alt} loading="lazy" decoding="async" />
+              <figcaption>{item.caption}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+      <p style="margin-top: 18px;"><a class="btn" href="/projects">See the project photos</a></p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Areas</p>
+        <h2>Bedford first. Then the towns around it.</h2>
+        <p>We are based in Biddenham. Bedfordshire is the regular round. Buckinghamshire and selected London jobs are booked when the trip makes sense.</p>
+      </div>
+      <div class="area-grid">
+        {
+          areas.map((area) => (
+            <a class="area-card" href={`/areas/${area.slug}`}>
+              <h3>{area.name}</h3>
+              <p>{area.line}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faqs" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">FAQs</p>
+        <h2>Questions people ask before they book.</h2>
+      </div>
+      <FaqList faqs={faqs} />
+    </div>
+  </section>
+
+  <QuoteBand />
+</Base>

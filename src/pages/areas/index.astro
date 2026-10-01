@@ -1,0 +1,45 @@
+---
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import QuoteBand from '../../components/QuoteBand.astro';
+import Base from '../../layouts/Base.astro';
+import { areas } from '../../data/areas';
+import { breadcrumbLd } from '../../data/schema';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Areas', path: '/areas' },
+];
+---
+
+<Base
+  title="Areas We Cover | Bedfordshire, Bucks & London"
+  description="Detailed Decorators cover Bedford, the nearby villages, Milton Keynes and selected London jobs. Based in Biddenham. Call 01234 900 002."
+  extraLd={[breadcrumbLd(crumbs)]}
+>
+  <section class="section page-hero">
+    <div class="wrap prose">
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Areas' }]} />
+      <h1>Areas we cover.</h1>
+      <p class="lede">
+        The regular round is Bedford and the villages around Biddenham. We also work across the rest of Bedfordshire, into Buckinghamshire, and on selected jobs in London.
+      </p>
+      <p>
+        Smaller places sit on the same trips even when they do not have their own page. That includes Elstow, Shortstown, Renhold, Wilstead, Stewartby, Turvey, Stevington, Sharnbrook, Sandy, Newport Pagnell, Olney, Stony Stratford and Bletchley. If your town is missing, call and ask.
+      </p>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0;">
+    <div class="wrap area-grid">
+      {
+        areas.map((area) => (
+          <a class="area-card" href={`/areas/${area.slug}`}>
+            <h2 style="font-size: 1.3rem;">{area.name}</h2>
+            <p>{area.county}</p>
+            <p>{area.line}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+  <QuoteBand />
+</Base>

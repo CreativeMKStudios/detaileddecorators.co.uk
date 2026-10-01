@@ -1,0 +1,47 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import Base from '../layouts/Base.astro';
+import { breadcrumbLd } from '../data/schema';
+import { site } from '../data/site';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Contact', path: '/contact' },
+];
+---
+
+<Base
+  title="Contact Detailed Decorators | Free Quote in Bedford"
+  description="Call 01234 900 002 or send a note for a free decorating survey in Bedford. Detailed Decorators, 12 Franklyn Gardens, Biddenham, MK40 4QD."
+  extraLd={[breadcrumbLd(crumbs)]}
+>
+  <section class="section page-hero">
+    <div class="wrap">
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Contact' }]} />
+      <h1>Tell us about the job.</h1>
+      <p class="lede">You will hear back from the team, and Adam will book a free survey at a time that suits you.</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top: 0;">
+    <div class="wrap contact-grid">
+      <div class="contact-card">
+        <h2>Phone</h2>
+        <p><a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a></p>
+        <h2 style="margin-top: 18px;">Email</h2>
+        <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        <h2 style="margin-top: 18px;">Office</h2>
+        <address>
+          {site.name}<br />
+          {site.street}<br />
+          {site.locality}, Bedford<br />
+          {site.postalCode}
+        </address>
+        <p>Please call before you travel. This is the office, not a walk-in shop. Adam comes to the property for the survey.</p>
+        <p><a href={site.maps} rel="noopener noreferrer" target="_blank">Open the map</a></p>
+        <p><a href={site.google} rel="noopener noreferrer" target="_blank">Google profile</a></p>
+      </div>
+      <QuoteForm />
+    </div>
+  </section>
+</Base>
